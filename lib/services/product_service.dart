@@ -85,4 +85,35 @@ class ProductService {
 
     return response.statusCode == 200;
   }
+
+  Future<bool> submitTugas(
+    String name,
+    int price,
+    String description,
+    String githubUrl,
+  ) async {
+
+    final token = await getToken();
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/products/submit'),
+
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+
+      body: jsonEncode({
+        'name': name,
+        'price': price,
+        'description': description,
+        'github_url': githubUrl,
+      }),
+    );
+
+    print(response.body);
+
+    return response.statusCode == 200 || response.statusCode == 201;
+  }
 }
